@@ -1,0 +1,24 @@
+{
+  "name": "employee-management-system",
+  "version": "1.0.0",
+  "description": "homework for week 12of university bootcamp",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AliceBryer/employee-management-system.git"
+  },
+  "author": "Alice Bryer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AliceBryer/employee-management-system/issues"
+  },
+  "homepage": "https://github.com/AliceBryer/employee-management-system#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "inquirer": "^9.1.1"
+  }
+}
