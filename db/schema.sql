@@ -5,12 +5,12 @@ USE company_db;
 
 CREATE TABLE departments (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  movie_name VARCHAR(40) NOT NULL
+  movie_name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(20) NOT NULL,
+    title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL,
     department_id INT,
     FOREIGN KEY (depatment_id)
@@ -21,8 +21,8 @@ CREATE TABLE roles (
 
 CREATE TABLE employees (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(20) NOT NULL,
-    last_name VARCHAR(20) NOT NULL, 
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL, 
     role_id INT,
     FOREIGN KEY (role_id)
     REFERENCES role(id)
