@@ -3,7 +3,7 @@ import mysql from "mysql2";
 import inquirer from "inquirer";
 // import cTable = from "console.table"
 
-const PORT = process.env.PORT || 3001;
+// const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
@@ -12,20 +12,18 @@ app.use(express.json());
 const db = mysql.createConnection(
   {
     host: "localhost",
-
     user: "root",
-
-    password: "",
+    password: "Murphy1234.",
     database: "company_db",
   },
   console.log(`Succsess: Connected to the database`)
 );
 
-const startSystem = () => {
-  inquirer.prompt([
+inquirer
+  .prompt([
     {
       type: "list",
-      name: "choices",
+      name: "initialchoices",
       message: "Please select from the following",
       choices: [
         "View Departments",
@@ -37,7 +35,5 @@ const startSystem = () => {
         "quit system",
       ],
     },
-  ]);
-};
-
-startSystem();
+  ])
+  .then(() => console.log("Success!"));
