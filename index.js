@@ -33,9 +33,9 @@ const initialChoices = () => {
           "View All Departments",
           "Add Department",
           "View All Roles",
-          "Add Role",
+          "Add New Role",
           "View All Employees",
-          "Add Employee",
+          "Add New Employee",
           "Update Employee Role",
           "Finish!",
         ],
@@ -45,25 +45,25 @@ const initialChoices = () => {
       if (answer.choices === "View All Departments") {
         viewAllDepartments();
       }
-      if (answer.choices === "addDepartment") {
+      if (answer.choices === "Add Department") {
         addDepartment();
       }
-      if (answer.choices === "viewAllRoles") {
+      if (answer.choices === "Vieww All Roles") {
         viewAllRoles();
       }
-      if (answer.choices === "addNewRole") {
+      if (answer.choices === "Add New Role") {
         addNewRole();
       }
-      if (answer.choices === "viewAllEmployees") {
+      if (answer.choices === "View All Employees") {
         viewAllEmployees();
       }
-      if (answer.choices === "addNewEmployee") {
+      if (answer.choices === "Add New Employee") {
         addNewEmployee();
       }
-      if (answer.choices === "updateEmployeeRole") {
+      if (answer.choices === "Update Employee Role") {
         updateEmployeeRole();
       }
-      if (answer.choices === "quit") {
+      if (answer.choices === "Finish") {
         db.end();
       }
     });
@@ -81,4 +81,33 @@ viewAllDepartments = () => {
     console.table(results);
     initialChoices();
   });
+};
+
+addDepartment = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "department",
+        message:
+          "Please type in the name of the deparment you would like to add",
+        validate: async (answer) => {
+          if (!answer) {
+            return "You must enter the name of the department to continue";
+          }
+          return true;
+        },
+      },
+    ])
+    .then(function (answer) {
+      db.query(
+        `INSERT INTO departments (department_name) 
+         VALUES ("${answer.department}")`,
+        (err, results) => {
+          if (err) throw err;
+          console.log(`${answer.department} has been added to the database.`);
+          initialChoices();
+        }
+      );
+    });
 };
