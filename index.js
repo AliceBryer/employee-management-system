@@ -1,7 +1,7 @@
 // import packages/dependencies
 
 const inquirer = require("inquirer");
-// const cTable = require("console.Table");
+const cTable = require("console.Table");
 
 // const colors = require("colors");
 const figlet = require("figlet");
@@ -42,7 +42,7 @@ const initialChoices = () => {
       },
     ])
     .then((answer) => {
-      if (answer.choices === "viewAllDepartments") {
+      if (answer.choices === "View All Departments") {
         viewAllDepartments();
       }
       if (answer.choices === "addDepartment") {
@@ -51,13 +51,13 @@ const initialChoices = () => {
       if (answer.choices === "viewAllRoles") {
         viewAllRoles();
       }
-      if (answer.choices === "addRole") {
+      if (answer.choices === "addNewRole") {
         addNewRole();
       }
       if (answer.choices === "viewAllEmployees") {
         viewAllEmployees();
       }
-      if (answer.choices === "addEmployee") {
+      if (answer.choices === "addNewEmployee") {
         addNewEmployee();
       }
       if (answer.choices === "updateEmployeeRole") {
@@ -79,6 +79,6 @@ viewAllDepartments = () => {
   db.query(sql, (err, results) => {
     if (err) throw err;
     console.table(results);
-    mainContent();
+    initialChoices();
   });
 };
