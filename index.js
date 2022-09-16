@@ -71,7 +71,7 @@ const initialChoices = () => {
 
 initialChoices();
 
-// function
+//view all departments function
 
 viewAllDepartments = () => {
   const sql = `SELECT departments.id AS id, 
@@ -85,7 +85,7 @@ viewAllDepartments = () => {
   });
 };
 
-// function
+// add department function
 
 addDepartment = () => {
   inquirer
@@ -116,7 +116,7 @@ addDepartment = () => {
     });
 };
 
-// function
+// view all roles function
 
 viewAllRoles = () => {
   const sql = `
@@ -134,7 +134,7 @@ viewAllRoles = () => {
   });
 };
 
-// add new role
+// add new role function
 
 addNewRole = () => {
   db.query(`SELECT * FROM departments;`, (err, results) => {
@@ -192,6 +192,8 @@ addNewRole = () => {
   });
 };
 
+// view all employees function
+
 viewAllEmployees = () => {
   const sql = `
 SELECT employees.id, 
@@ -213,7 +215,8 @@ LEFT JOIN employees manager ON employees.manager_id = manager.id;`;
   });
 };
 
-// function to add employee
+// add new employee function
+
 addNewEmployee = () => {
   db.query(`SELECT * FROM employees;`, (err, results) => {
     if (err) throw err;
@@ -279,6 +282,58 @@ addNewEmployee = () => {
               console.log(
                 `${answer.firstName} ${answer.lastName} has been added to the database.`
               );
+              initialChoices();
+            }
+          );
+        });
+    });
+  });
+};
+
+// update employee role function
+
+updateEmployeeRole = () => {
+  db.query(`SELECT * FROM employees;`, (err, results) => {
+    if (err) throw err;
+    let employees = results.map((employees) => ({
+      name: employees.first_name + " " + employees.last_name,
+      value: employees.id,
+    }));
+    db.query(`SELECT * FROM roles;`, (err, results) => {
+      if (err) throw err;
+      let roles = results.map((roles) => ({
+        name: roles.title,
+        value: roles.id,
+      }));
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "employeeList",
+            message: "Select an employee from the list to update",
+            choices: employees,
+          },
+          {
+            type: "list",
+            name: "newRole",
+            message: "From the choices select their new role?",
+            choices: roles,
+          },
+        ])
+        .then((answer) => {
+          db.query(
+            `UPDATE employees SET ? WHERE ?`,
+            [
+              {
+                role_id: answer.newRole,
+              },
+              {
+                id: answer.employeeList,
+              },
+            ],
+            (err, results) => {
+              if (err) throw err;
+              console.log(`The employees role has been updated.`);
               initialChoices();
             }
           );
