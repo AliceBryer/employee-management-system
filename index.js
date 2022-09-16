@@ -1,7 +1,8 @@
 // import packages/dependencies
 
-// const inquirer = require("inquirer");
+const inquirer = require("inquirer");
 // const cTable = require("console.Table");
+
 // const colors = require("colors");
 const figlet = require("figlet");
 const mysql = require("mysql2");
@@ -19,8 +20,6 @@ const db = mysql.createConnection(
 db.connect(function (err) {
   if (err) throw err;
 });
-
-initialChoices();
 
 // prompt main content
 const initialChoices = () => {
@@ -53,13 +52,13 @@ const initialChoices = () => {
         viewAllRoles();
       }
       if (answer.choices === "addRole") {
-        addRole();
+        addNewRole();
       }
       if (answer.choices === "viewAllEmployees") {
         viewAllEmployees();
       }
       if (answer.choices === "addEmployee") {
-        addEmployee();
+        addNewEmployee();
       }
       if (answer.choices === "updateEmployeeRole") {
         updateEmployeeRole();
@@ -68,4 +67,18 @@ const initialChoices = () => {
         db.end();
       }
     });
+};
+
+initialChoices();
+
+viewAllDepartments = () => {
+  const sql = `SELECT departments.id AS id, 
+  departments.department_name AS department 
+  FROM departments;`;
+
+  db.query(sql, (err, results) => {
+    if (err) throw err;
+    console.table(results);
+    mainContent();
+  });
 };
