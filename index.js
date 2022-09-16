@@ -133,3 +133,61 @@ viewAllRoles = () => {
     initialChoices();
   });
 };
+
+// add new role
+
+addNewRole = () => {
+  db.query(`SELECT * FROM departments;`, (err, results) => {
+    if (err) throw err;
+    let departments = results.map((departments) => ({
+      name: departments.department_name,
+      value: departments.id,
+    }));
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "role",
+          message: "What new role would you like to add?",
+          validate: async (answer) => {
+            if (!answer) {
+              return "You must enter a role name to continue";
+            }
+            return true;
+          },
+        },
+        {
+          type: "input",
+          name: "salary",
+          message: "What is the salary of the role?",
+          validate: async (answer) => {
+            if (!answer || isNaN(answer)) {
+              return "You must enter a salary in numeric form to continue";
+            }
+            return true;
+          },
+        },
+        {
+          type: "list",
+          name: "department",
+          message: "Which department would you like to add this job role to?",
+          choices: departments,
+        },
+      ])
+      .then((answer) => {
+        db.query(
+          `INSERT INTO roles SET ?;`,
+          {
+            title: answer.role,
+            salary: answer.salary,
+            department_id: answer.department,
+          },
+          (err, results) => {
+            if (err) throw err;
+            console.log(`${answer.role} has been added to the database`);
+            initialChoices();
+          }
+        );
+      });
+  });
+};
