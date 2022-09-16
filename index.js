@@ -2,9 +2,6 @@
 
 const inquirer = require("inquirer");
 const cTable = require("console.Table");
-
-// const colors = require("colors");
-const figlet = require("figlet");
 const mysql = require("mysql2");
 
 const db = mysql.createConnection(
