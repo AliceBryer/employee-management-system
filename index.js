@@ -1,7 +1,7 @@
 // import packages/dependencies
 
-const inquirer = require("inquirer");
-const cTable = require("console.Table");
+// const inquirer = require("inquirer");
+// const cTable = require("console.Table");
 const mysql = require("mysql2");
 
 const db = mysql.createConnection(
