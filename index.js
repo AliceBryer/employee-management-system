@@ -48,7 +48,7 @@ const initialChoices = () => {
       if (answer.choices === "Add Department") {
         addDepartment();
       }
-      if (answer.choices === "Vieww All Roles") {
+      if (answer.choices === "View All Roles") {
         viewAllRoles();
       }
       if (answer.choices === "Add New Role") {
@@ -71,6 +71,8 @@ const initialChoices = () => {
 
 initialChoices();
 
+// function
+
 viewAllDepartments = () => {
   const sql = `SELECT departments.id AS id, 
   departments.department_name AS department 
@@ -82,6 +84,8 @@ viewAllDepartments = () => {
     initialChoices();
   });
 };
+
+// function
 
 addDepartment = () => {
   inquirer
@@ -110,4 +114,22 @@ addDepartment = () => {
         }
       );
     });
+};
+
+// function
+
+viewAllRoles = () => {
+  const sql = `
+  SELECT roles.id, 
+  roles.title, 
+  roles.salary, 
+  departments.department_name AS department 
+  FROM roles 
+  INNER JOIN departments ON roles.department_id = departments.id;`;
+
+  db.query(sql, (err, results) => {
+    if (err) throw err;
+    console.table(results);
+    initialChoices();
+  });
 };
