@@ -209,6 +209,80 @@ LEFT JOIN employees manager ON employees.manager_id = manager.id;`;
   db.query(sql, (err, results) => {
     if (err) throw err;
     console.table(results);
-    initialChoices;
+    initialChoices();
+  });
+};
+
+// function to add employee
+addNewEmployee = () => {
+  db.query(`SELECT * FROM employees;`, (err, results) => {
+    if (err) throw err;
+    let managers = results.map((employees) => ({
+      name: employees.first_name + " " + employees.last_name,
+      value: employees.id,
+    }));
+    db.query(`SELECT * FROM roles;`, (err, results) => {
+      if (err) throw err;
+      let roles = results.map((roles) => ({
+        name: roles.title,
+        value: roles.id,
+      }));
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "firstName",
+            message: "What is their first name?",
+            validate: async (answer) => {
+              if (!answer) {
+                return "You must add a name to continue.";
+              }
+              return true;
+            },
+          },
+          {
+            type: "input",
+            name: "lastName",
+            message: "What is their last name?",
+            validate: async (answer) => {
+              if (!answer) {
+                return "You must add a last name to continue.";
+              }
+              return true;
+            },
+          },
+          {
+            type: "list",
+            name: "role",
+            message:
+              "What is their role? Please pick from the choices, otherwise you will need to create a new role ",
+            choices: roles,
+          },
+          {
+            type: "list",
+            name: "manager",
+            message: "Who is their manager?",
+            choices: managers,
+          },
+        ])
+        .then((answer) => {
+          db.query(
+            `INSERT INTO employees SET ?;`,
+            {
+              first_name: answer.firstName,
+              last_name: answer.lastName,
+              role_id: answer.role,
+              manager_id: answer.manager,
+            },
+            (err, results) => {
+              if (err) throw err;
+              console.log(
+                `${answer.firstName} ${answer.lastName} has been added to the database.`
+              );
+              initialChoices();
+            }
+          );
+        });
+    });
   });
 };
